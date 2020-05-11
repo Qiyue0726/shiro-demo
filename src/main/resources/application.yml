@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shiro?characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 3333
+
+server:
+  port: 9090
+
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/shiro?useSSL=false
+#    username: root
+#    password: 3333
