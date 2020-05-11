@@ -23,6 +23,7 @@ public class UserReaml extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        System.out.println("开始认证");
         if (authenticationToken.getPrincipal() == null){
             return null;
         }

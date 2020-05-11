@@ -17,12 +17,13 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+//        shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
         Map<String,String> map = new HashMap<>();
         map.put("/","anon");
         map.put("/index","anon");
         map.put("/toLogin","anon");
+        map.put("/login","anon");
         map.put("/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;

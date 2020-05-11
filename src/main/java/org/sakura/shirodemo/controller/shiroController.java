@@ -1,10 +1,7 @@
 package org.sakura.shirodemo.controller;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.sakura.shirodemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +30,16 @@ public class shiroController {
         return "login";
     }
 
-    @PostMapping("/login")
-//    @ResponseBody
-    public String login(String name, String password,Model model){
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public String login(String name, String password, Model model){
+
         //登录验证简单逻辑
 //        if (userService.login(name,password)) {
 //            return "index";
 //        }
 //        return "login";
+
+        // shiro 登录认证
         UsernamePasswordToken token = new UsernamePasswordToken(name,password);
         Subject subject = SecurityUtils.getSubject();
 
@@ -49,20 +48,22 @@ public class shiroController {
             model.addAttribute("msg","Hello ");
             model.addAttribute("name",name);
             return "index";
-        }
-//        catch (IncorrectCredentialsException ae){
-//            return "密码不正确";
-//        }
-        catch (AuthenticationException e){
-//            return "用户名或密码错误";
+        } catch (UnknownAccountException uae) {
+            model.addAttribute("msg1","未知账户");
+            return "login";
+        } catch (IncorrectCredentialsException ice) {
+            model.addAttribute("msg1","密码不正确");
+            return "login";
+        } catch (LockedAccountException lae) {
+            model.addAttribute("msg1","账户已锁定");
+            return "login";
+        } catch (ExcessiveAttemptsException eae) {
+            model.addAttribute("msg1","用户名或密码错误次数过多");
+            return "login";
+        } catch (AuthenticationException ae) {
+            model.addAttribute("msg1","用户名或密码不正确！");
             return "login";
         }
-//        if (subject.isAuthenticated()){
-//            return "登录成功";
-//        } else {
-//            token.clear();
-//            return "登录失败";
-//        }
     }
 
     @GetMapping("/add")
