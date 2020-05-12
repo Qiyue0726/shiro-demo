@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sakura.shirodemo.mapper.PermsMapper">
+    <select id="getPerms" resultType="string">
+        select perms from permission where id = #{mid}
+    </select>
+
+    <select id="getMid" resultType="int">
+        select mid from user_perms where uid = #{uid}
+    </select>
+</mapper>
