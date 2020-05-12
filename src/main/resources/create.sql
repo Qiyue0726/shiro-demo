@@ -16,3 +16,15 @@ role varchar(20) not null);
 
 insert into role values(1,"admin");
 insert into role values(2,"user");
+
+drop table if exists user_role;
+create table user_role(
+uid int(10) not null,
+rid int(10) not null);
+ insert into user_role values(1,1);
+ insert into user_role values(2,2);
+
+ drop table if exists permission;
+ create table permission(
+ id int(10) not null primary key,
+ name varchar(30) default null)

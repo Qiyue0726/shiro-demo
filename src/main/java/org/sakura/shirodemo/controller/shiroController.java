@@ -2,6 +2,8 @@ package org.sakura.shirodemo.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.sakura.shirodemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +68,7 @@ public class shiroController {
         }
     }
 
+    @RequiresPermissions("user:add")
     @GetMapping("/add")
     public String add(){
         return "/user/add";
@@ -73,6 +76,15 @@ public class shiroController {
     @GetMapping("/update")
     public String update(){
         return "/user/update";
+    }
+    @RequiresRoles("admin")
+    @GetMapping("/delete")
+    public String delete(){
+        return "/user/delete";
+    }
+    @GetMapping("/select")
+    public String select(){
+        return "/user/select";
     }
 
     @GetMapping("/test")
