@@ -1,5 +1,6 @@
 package org.sakura.shirodemo.config;
 
+import com.mysql.cj.util.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -13,6 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.sakura.shirodemo.entiry.UserEntity;
 import org.sakura.shirodemo.service.RoleService;
 import org.sakura.shirodemo.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
@@ -32,13 +34,18 @@ public class UserReaml extends AuthorizingRealm {
         System.out.println("------------------开始授权-----------------");
 
         Subject subject = SecurityUtils.getSubject();
-        UserEntity user = (UserEntity) subject.getPrincipal();
+        Object principal = subject.getPrincipal();
+        UserEntity userEntity = null;
+        if (!StringUtils.isNullOrEmpty(String.valueOf(principal))){
+            userEntity = new UserEntity();
+            BeanUtils.copyProperties(principal,userEntity);
+        }
 
         Set<String> roleSet = new HashSet<>();
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 
-        if ("admin".equals(roleService.select(user))){
+        if ("admin".equals(roleService.select(userEntity))){
             simpleAuthorizationInfo.addRole("admin");
             simpleAuthorizationInfo.addStringPermission("*:*");
         }
@@ -57,7 +64,8 @@ public class UserReaml extends AuthorizingRealm {
         if (userEntity == null){
             return null;
         }else {
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name,userEntity.getPassword(),getName());
+            // SimpleAuthenticationInfo 中直接放 user 对象，便于授权时获取其它信息，通过 subject.getPrincipal() 获取该对象
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(userEntity,userEntity.getPassword(),getName());
             return simpleAuthenticationInfo;
         }
     }

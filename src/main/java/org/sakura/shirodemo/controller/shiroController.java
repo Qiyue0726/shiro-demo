@@ -68,20 +68,23 @@ public class shiroController {
         }
     }
 
-    @RequiresPermissions("user:add")
     @GetMapping("/add")
+    @RequiresPermissions("system:user:add")
     public String add(){
         return "/user/add";
     }
+
     @GetMapping("/update")
     public String update(){
         return "/user/update";
     }
-    @RequiresRoles("admin")
+
     @GetMapping("/delete")
+    @RequiresRoles("admin")
     public String delete(){
         return "/user/delete";
     }
+
     @GetMapping("/select")
     public String select(){
         return "/user/select";
