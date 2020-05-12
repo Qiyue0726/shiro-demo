@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+        xmlns:shiro="http://www.thymeleaf.org/thymeleaf-extras-shiro">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,12 +11,26 @@
 <p th:text="${msg}"></p>
 <span th:text="${name}">World</span>
 <hr/>
-<a th:href="@{/add}">add</a>
-<br/>
-<a th:href="@{/update}">update</a>
-<br/>
-<a th:href="@{/delete}">delete</a>
-<br/>
+
+<div shiro:hasPermission="user:add">
+    <a th:href="@{/add}">add</a>
+    <br/>
+</div>
+<div shiro:hasPermission="user:update">
+    <a th:href="@{/update}">update</a>
+    <br/>
+</div>
+<div shiro:hasRole="admin">
+    <a th:href="@{/delete}">delete</a>
+    <br/>
+</div>
+
 <a th:href="@{/select}">select</a>
+
+<div th:if="${logout} eq 'true'">
+    <a th:href="@{/logout}">logout</a>
+</div>
+
+
 </body>
 </html>

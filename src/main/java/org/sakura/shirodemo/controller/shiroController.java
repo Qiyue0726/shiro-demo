@@ -49,6 +49,7 @@ public class shiroController {
             subject.login(token);
             model.addAttribute("msg","Hello ");
             model.addAttribute("name",name);
+            model.addAttribute("logout","true");
             return "index";
         } catch (UnknownAccountException uae) {
             model.addAttribute("msg1","未知账户");
@@ -89,6 +90,12 @@ public class shiroController {
     @GetMapping("/select")
     public String select(){
         return "/user/select";
+    }
+
+    @GetMapping("/logout")
+    @ResponseBody
+    public String logout(Model model){
+        return "已退出系统";
     }
 
     @GetMapping("/test")
