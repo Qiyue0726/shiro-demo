@@ -69,11 +69,12 @@ public class shiroController {
     }
 
     @GetMapping("/add")
-    @RequiresPermissions("system:user:add")
+    @RequiresPermissions("user:add")
     public String add(){
         return "/user/add";
     }
 
+    @RequiresPermissions("user:update")
     @GetMapping("/update")
     public String update(){
         return "/user/update";

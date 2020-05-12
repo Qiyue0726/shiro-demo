@@ -12,6 +12,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.sakura.shirodemo.entiry.UserEntity;
+import org.sakura.shirodemo.service.PermsService;
 import org.sakura.shirodemo.service.RoleService;
 import org.sakura.shirodemo.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,9 @@ public class UserReaml extends AuthorizingRealm {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    PermsService permsService;
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
@@ -41,13 +45,16 @@ public class UserReaml extends AuthorizingRealm {
             BeanUtils.copyProperties(principal,userEntity);
         }
 
-        Set<String> roleSet = new HashSet<>();
+        Set<String> permsSet = new HashSet<>();
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 
         if ("admin".equals(roleService.select(userEntity))){
             simpleAuthorizationInfo.addRole("admin");
-            simpleAuthorizationInfo.addStringPermission("*:*");
+//            simpleAuthorizationInfo.addStringPermission("*:*");
+        }else {
+            permsSet = permsService.getPerms(userEntity);
+            simpleAuthorizationInfo.setStringPermissions(permsSet);
         }
         return simpleAuthorizationInfo;
 
