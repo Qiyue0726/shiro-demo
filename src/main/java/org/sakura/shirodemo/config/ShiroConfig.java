@@ -27,6 +27,14 @@ public class ShiroConfig {
         map.put("/index","anon");
         map.put("/toLogin","anon");
         map.put("/login","anon");
+        // 放行swagger
+        map.put("/swagger-ui.html", "anon");
+        map.put("/swagger-resources/**", "anon");
+        map.put("/v2/api-docs", "anon");
+        map.put("/webjars/springfox-swagger-ui/**", "anon");
+        map.put("/configuration/security", "anon");
+        map.put("/configuration/ui", "anon");
+
         map.put("/update","perms[user:update]");
         map.put("/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);

@@ -1,5 +1,7 @@
 package org.sakura.shirodemo.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -12,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
+@Api
 @Controller
 public class shiroController {
 
@@ -27,11 +29,15 @@ public class shiroController {
         return "index";
     }
 
+    
+
+
     @RequestMapping({"/toLogin"})
     public String toLogin(){
         return "login";
     }
 
+    @ApiOperation("登录API")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(String name, String password, Model model){
 
